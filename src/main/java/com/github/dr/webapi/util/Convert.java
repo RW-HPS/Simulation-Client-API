@@ -1,0 +1,29 @@
+/*
+ * Copyright 2020-2021 RW-HPS Team and contributors.
+ *
+ * 此源代码的使用受 GNU AFFERO GENERAL PUBLIC LICENSE version 3 许可证的约束, 可以在以下链接找到该许可证.
+ * Use of this source code is governed by the GNU AGPLv3 license that can be found through the following link.
+ *
+ * https://github.com/RW-HPS/RW-HPS/blob/master/LICENSE
+ */
+
+package com.github.dr.webapi.util;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Dr
+ */
+public class Convert {
+    public static <T> List<T> castList(Object obj, Class<T> clazz) {
+        List<T> result = new ArrayList<T>();
+        if(obj instanceof List<?>) {
+            for (Object o : (List<?>) obj) {
+                result.add(clazz.cast(o));
+            }
+            return result;
+        }
+        return null;
+    }
+}
