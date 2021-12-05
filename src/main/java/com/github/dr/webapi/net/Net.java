@@ -28,36 +28,6 @@ import static com.github.dr.webapi.io.NetIo.*;
  * @author Dr
  */
 public class Net {
-
-	public static void mdtPingServer(Consumer<NetData.MdtPingData> listener, String ip, int port) throws NetException {
-		try {
-            DatagramSocket socket = new DatagramSocket();
-            socket.send(new DatagramPacket(new byte[]{-2, 1}, 2, InetAddress.getByName(ip), port));
-            socket.setSoTimeout(2000);
-            DatagramPacket packet = new DatagramPacket(new byte[256], 256);
-            long start = System.currentTimeMillis();
-            socket.receive(packet);
-            ByteBuffer buffer = ByteBuffer.wrap(packet.getData());
-            NetData.MdtPingData host = readServerData(ip+":"+port, buffer);
-            host.ping = (int) (System.currentTimeMillis() - start);
-            listener.accept(host);
-            socket.disconnect();
-        } catch (Exception e) {
-            throw new NetException("ERROR");
-        }
-	}
-
-	public static String rwDebugServer(String debug, String ip, int port) throws Exception {
-		try (Socket socket = new Socket()) {
-			socket.connect(new InetSocketAddress(InetAddress.getByName(ip), port), port);
-			IoOutputStream o = new IoOutputStream();
-		    o.writeString(debug);
-		    sendPacket(socket,o.createPacket(2000));
-		    Object[] data = readServer(socket,0,null);
-		    return (String) data[0];
-        }
-	}
-
 	public static void rwConnectServer(Consumer<NetData.RwConnectData> listener, Object[] obj, String ip, int port) throws IOException,NetException,KickException,PasswdException {
 		try (Socket socket = new Socket()) {
 			long cstart = System.currentTimeMillis();
